@@ -1,4 +1,1 @@
-https://betterquest.ie/*   https://www.betterquest.ie/:splat   301!
-/old-page    /new-page   301
-/docs/*      /help/:splat  302
-/*   /index.html   200
+https://betterquest.ie/\*   https://www.betterquest.ie/:splat   301!
