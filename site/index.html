@@ -1,21 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BetterQuest — Treasure hunts, simplified</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<style>
-  :root {font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif}
-  body {display:grid;place-items:center;min-height:100vh;margin:0;background:#0f172a;color:#e5e7eb}
-  .card {max-width:720px;padding:32px;border-radius:16px;background:#111827;border:1px solid #334155}
-  h1 {margin:0 0 12px;font-size:2rem}
-  p {opacity:.9;line-height:1.5}
-  a.btn {display:inline-block;margin-top:16px;padding:10px 16px;border-radius:10px;border:1px solid #94a3b8;color:#e5e7eb;text-decoration:none}
-  a.btn:hover{background:#1f2937}
-</style>
-<div class="card">
-  <h1>BetterQuest</h1>
-  <p>Run brilliant treasure hunts with QR/NFC. Coming soon.</p>
-  <p><a class="btn" href="https://www.betterquest.ie/api/health">API health →</a></p>
-</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BetterQuest</title>
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="BetterQuest – gamified treasure hunts for teams, events, and adventures." />
+  <meta property="og:title" content="BetterQuest" />
+  <meta property="og:description" content="Gamified treasure hunts for teams, events, and adventures." />
+  <meta property="og:type" content="website" />
+</head>
+<body>
+  <div class="container">
+    <h1>BetterQuest</h1>
+    <p class="tagline">Adventure. Discovery. Teamwork.</p>
+    
+    <p>We’re building something fun. Sign up below to be the first to know when we launch!</p>
+    
+    <form name="signup" method="POST" data-netlify="true">
+      <input type="email" name="email" placeholder="Your email" required />
+      <button type="submit">Notify Me</button>
+    </form>
+    
+    <footer>
+      <p>© <span id="year"></span> BetterQuest. All rights reserved.</p>
+    </footer>
+  </div>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
 </html>
