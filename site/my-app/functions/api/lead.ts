@@ -9,7 +9,7 @@ export const onRequestPost: PagesFunction<{ LEADS: KVNamespace }> = async ({ req
     await env.LEADS.put(
       `lead:${id}`,
       JSON.stringify({ id, when, ...data }),
-      { expirationTtl: 60 * 60 * 24 * 365 } // store for 1 year
+      { expirationTtl: 60 * 60 * 24 * 365 } // keep 1 year
     );
 
     return new Response(JSON.stringify({ ok: true }), {
