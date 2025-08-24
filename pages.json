@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "rootDir": "site/my-app",
+  "buildCommand": "npm run build",
+  "destinationDir": "dist"
+}
+
