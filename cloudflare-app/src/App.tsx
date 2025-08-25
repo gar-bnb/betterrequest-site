@@ -27,8 +27,8 @@ export default function BetterQuestTier2Validation() {
       <section className="mx-auto max-w-6xl px-4 pt-14 pb-10 grid md:grid-cols-2 gap-10 items-center">
         <div>
           <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
-            Bring a Movie-Level Treasure Hunt to Your Team —
-            <span className="block">No Apps. Just Tap &amp; Play.</span>
+            Movie-Level Treasure Hunts for Teams —
+            <span className="block">No Apps. Tap &amp; Play in Minutes.</span>
           </h1>
           <p className="mt-4 text-lg text-gray-700">
             Our premium NFC kit turns any venue into a smart, story-driven challenge. Tap tags, unlock clues, track progress in real-time. Perfect for teams, schools, and events.
@@ -42,7 +42,7 @@ export default function BetterQuestTier2Validation() {
             <button onClick={() => setOpenPre(true)} className="rounded-2xl px-5 py-3 bg-black text-white font-semibold hover:opacity-90">Preorder Kit — €249</button>
             <a href="#how" className="rounded-2xl px-5 py-3 border font-semibold hover:bg-gray-50">See how it works</a>
           </div>
-          <p className="mt-2 text-sm text-gray-500">No charge today. Secure a place in the first batch. Limited early-bird pricing.</p>
+          <p className="mt-2 text-sm text-gray-500">No charge today. Reserve now, pay only when your kit ships. Cancel anytime.</p>
         </div>
         <div className="relative">
           <div className="aspect-[4/3] w-full rounded-3xl border shadow-sm grid place-items-center text-center p-8">
