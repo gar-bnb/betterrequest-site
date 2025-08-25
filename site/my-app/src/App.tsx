@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function BetterQuestTier2Validation() {
   const [openPre, setOpenPre] = useState(false);
