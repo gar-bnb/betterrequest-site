@@ -127,7 +127,11 @@ export default function BetterQuestTier2Validation() {
       {/* Footer */}
       <footer className="border-t">
         <div className="mx-auto max-w-6xl px-4 py-10 grid md:grid-cols-2 gap-6 items-center">
-          <div className="text-sm text-gray-600">© {new Date().getFullYear()} BetterQuest. All rights reserved.</div>
+          <div className="text-sm text-gray-600">
+            © {new Date().getFullYear()} BetterQuest. Made in Ireland.
+            {" "}<a className="underline hover:no-underline" href="mailto:hello@betterquest.ie">hello@betterquest.ie</a>
+            {" "}| <a className="underline hover:no-underline" href="/privacy.html">Privacy</a>
+          </div>
           <div className="justify-self-end"><LeadForm /></div>
         </div>
       </footer>
