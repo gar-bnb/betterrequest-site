@@ -46,6 +46,8 @@ a:hover { color: #312e81; }
   backdrop-filter: blur(6px);
   background: rgba(255,255,255,.8);
   border-bottom: 1px solid var(--border);
+  padding-right: 10px;
+  padding-left: 0px;
 }
 .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
 .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 20px; }
