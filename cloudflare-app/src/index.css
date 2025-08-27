@@ -47,7 +47,7 @@ a:hover { color: #312e81; }
   background: rgba(255,255,255,.8);
   border-bottom: 1px solid var(--border);
   padding-right: 10px;
-  padding-left: 0px;
+  padding-left: 10px;
 }
 .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
 .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 20px; }
@@ -94,7 +94,7 @@ a:hover { color: #312e81; }
 @media (min-width:900px){ .faq-grid { grid-template-columns: 1fr 1fr; } }
 
 /* Footer */
-.footer { border-top:1px solid var(--border); }
+.footer { border-top:1px solid var(--border); padding-left: 10px; padding-right: 10px;}
 .footer-inner { display:grid; gap:16px; padding: 40px 0; }
 @media (min-width:900px){ .footer-inner { grid-template-columns: 1fr auto; align-items:center; } }
 .small { font-size: 14px; color:#6b7280; }
