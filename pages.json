@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "rootDir": "cloudflare-app",
+  "buildCommand": "npm run build",
+  "destinationDir": "dist"
+}
