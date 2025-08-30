@@ -342,9 +342,12 @@ function Landing() {
       <footer className="footer">
         <div className="container footer-inner">
           <div className="small">
-            © {new Date().getFullYear()} BetterQuest. Made in Ireland.{" "}
+            © {new Date().getUTCDate()} BetterQuest. Made in Ireland.{" "}
             <a href="mailto:hello@betterquest.ie">hello@betterquest.ie</a> |{" "}
             <a href="/privacy.html">Privacy</a>
+            <div style={{ fontSize: 10, color: "#888", marginTop: 6 }}>
+              v{__COMMIT_HASH__} • {__BRANCH__} • {__BUILD_DATE__}
+            </div>
           </div>
           <div>
             <LeadForm />
