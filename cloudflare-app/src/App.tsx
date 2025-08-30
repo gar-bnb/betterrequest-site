@@ -38,6 +38,7 @@ function PortalApp() {
 function PortalHome() {
   const [runId, setRunId] = useState("");
 
+  //test
   const openRunner = () => {
     if (!runId.trim()) return alert("Enter a Hunt ID first");
     location.href = `/app/run?h=${encodeURIComponent(runId.trim())}`;
