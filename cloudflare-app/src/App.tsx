@@ -297,22 +297,22 @@ function Landing() {
 
           <div className="kit-grid mt-4">
             <ul className="card">
-              <li>• 16x NFC tags (NTAG215) pre-programmed</li>
-              <li>• 16x pro-printed clue cards (laminated)</li>
-              <li>• Host guide (setup, hints, safety)</li>
-              <li>• Access to BetterQuest web console</li>
-              <li>• Leaderboard + anti-cheat cooldowns</li>
-              <li>• Email support for first event</li>
+              <li>16x NFC tags (NTAG215) pre-programmed</li>
+              <li>16x pro-printed clue cards (laminated)</li>
+              <li>Host guide (setup, hints, safety)</li>
+              <li>Access to BetterQuest web console</li>
+              <li>Leaderboard + anti-cheat cooldowns</li>
+              <li>Email support for first event</li>
             </ul>
 
             <div className="card">
               <p className="text-sm text-muted m-0">Pilot batch details</p>
               <ul className="mt-2">
-                <li>• Early-bird price: <strong>€249</strong></li>
-                <li>• Ideal group size: <strong>10–40 players</strong></li>
-                <li>• Duration: <strong>60–90 minutes</strong></li>
-                <li>• Ships from Ireland 🇮🇪</li>
-                <li>• Works on iOS &amp; Android — no app installs</li>
+                <li>Early-bird price: <strong>€249</strong></li>
+                <li>Ideal group size: <strong>10–40 players</strong></li>
+                <li>Duration: <strong>60–90 minutes</strong></li>
+                <li>Ships from Ireland 🇮🇪</li>
+                <li>Works on iOS &amp; Android — no app installs</li>
               </ul>
 
               <button className="btn btn-primary w-full mt-4" onClick={() => setOpenPre(true)}>
@@ -342,7 +342,7 @@ function Landing() {
       <footer className="footer">
         <div className="container footer-inner">
           <div className="small">
-            © {new Date().getUTCDate()} BetterQuest. Made in Ireland.{" "}
+            © {new Date().getFullYear()} BetterQuest. Made in Ireland.{" "}
             <a href="mailto:hello@betterquest.ie">hello@betterquest.ie</a> |{" "}
             <a href="/privacy.html">Privacy</a>
             <div style={{ fontSize: 10, color: "#888", marginTop: 6 }}>
