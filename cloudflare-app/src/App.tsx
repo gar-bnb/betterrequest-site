@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import HuntBuilder from "./pages/HuntBuilder";
 import RunHunt from "./pages/RunHunt";
 import Help from "./pages/Help";
+import PrintPack from "./pages/PrintPack";
+
 
 /**
  * App wrapper that preserves the public landing at "/"
@@ -32,6 +34,7 @@ function PortalApp() {
         <Route path="/builder" element={<HuntBuilder />} />
         <Route path="/run" element={<RunHunt />} />
         <Route path="/help" element={<Help />} />
+        <Route path="/print" element={<PrintPack />} />
       </Routes>
     </BrowserRouter>
   );

@@ -144,6 +144,11 @@ export default function HuntBuilder() {
             Print these QR codes. Each links to the scan endpoint. Order implies
             sequence.
           </p>
+          <p className="mt-2">
+            <a className="btn btn-secondary" href={`/app/print?h=${huntId}`} target="_blank" rel="noopener">
+                Open Print Pack
+            </a>
+          </p>
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {locations.map((l, i) => {
               // Relaxed QR mode: tagId = "qr"
