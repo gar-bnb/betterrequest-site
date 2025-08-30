@@ -4,6 +4,7 @@ import { api } from "../lib/api";
 import QRCodeCard from "../components/QRCodeCard";
 import { getOrCreateGroupId } from "../lib/storage";
 import ErrorBanner from "../components/ErrorBanner";
+import { getRunnerOrigin } from "../lib/urls";
 
 type ClueIn = { location: string; text?: string };
 
@@ -84,12 +85,21 @@ export default function HuntBuilder() {
 
       {error && (
         <div className="mt-2">
-          <ErrorBanner kind="error" title="Could not complete that action" message={error} onClose={() => setError("")} />
+          <ErrorBanner
+            kind="error"
+            title="Could not complete that action"
+            message={error}
+            onClose={() => setError("")}
+          />
         </div>
       )}
       {notice && (
         <div className="mt-2">
-          <ErrorBanner kind="success" message={notice} onClose={() => setNotice("")} />
+          <ErrorBanner
+            kind="success"
+            message={notice}
+            onClose={() => setNotice("")}
+          />
         </div>
       )}
 
@@ -120,8 +130,12 @@ export default function HuntBuilder() {
       ))}
 
       <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
-        <button className="btn btn-secondary" onClick={generate}>Generate clues (AI or fallback)</button>
-        <button className="btn btn-primary" onClick={createHunt}>Create hunt</button>
+        <button className="btn btn-secondary" onClick={generate}>
+          Generate clues (AI or fallback)
+        </button>
+        <button className="btn btn-primary" onClick={createHunt}>
+          Create hunt
+        </button>
       </div>
 
       {clues && (
@@ -141,40 +155,47 @@ export default function HuntBuilder() {
         <div style={{ marginTop: 24 }}>
           <h3>Print Pack</h3>
           <p>
-            Print these QR codes. Each links to the scan endpoint. Order implies
-            sequence.
+            Print these QR codes. Each links to the scan endpoint. Order
+            implies sequence.
           </p>
+
           <p className="mt-2">
-            <a className="btn btn-secondary" href={`/app/print?h=${huntId}`} target="_blank" rel="noopener">
-                Open Print Pack
+            <a
+              className="btn btn-secondary"
+              href={`/app/print?h=${huntId}`}
+              target="_blank"
+              rel="noopener"
+            >
+              Open Print Pack
             </a>
           </p>
+
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {locations.map((l, i) => {
               // Relaxed QR mode: tagId = "qr"
               const url = `${location.origin}/api/scan/qr?g=${groupId}&h=${huntId}`;
               return (
-                <QRCodeCard
-                  key={i}
-                  text={url}
-                  label={`${i + 1}. ${l.location}`}
-                />
+                <QRCodeCard key={i} text={url} label={`${i + 1}. ${l.location}`} />
               );
             })}
           </div>
+
           <p>
             Runner page:{" "}
-            <a href={`/app/run?h=${huntId}`}>/app/run?h={huntId}</a>
+            {/* Show the correct runner origin in the visible link */}
+            <a href={`${getRunnerOrigin()}/?h=${huntId}`}>
+              {getRunnerOrigin()}/?h={huntId}
+            </a>
             <button
               className="btn btn-secondary"
               style={{ marginLeft: 8 }}
               onClick={async () => {
-                const url = `${location.origin}/app/run?h=${huntId}`;
+                const runnerUrl = `${getRunnerOrigin()}/?h=${huntId}`;
                 try {
-                  await navigator.clipboard.writeText(url);
+                  await navigator.clipboard.writeText(runnerUrl);
                   setNotice("Runner link copied to clipboard.");
                 } catch {
-                  setNotice(url);
+                  setNotice(runnerUrl);
                 }
               }}
             >

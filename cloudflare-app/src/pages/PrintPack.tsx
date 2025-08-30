@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import QRCodeCard from "../components/QRCodeCard";
 import { getOrCreateGroupId } from "../lib/storage";
 import { toDataURL } from "qrcode";
+import { getRunnerOrigin } from "../lib/urls";
 
 type Hunt = {
   id: string;
@@ -52,7 +53,7 @@ export default function PrintPack() {
     );
   }
 
-  const runnerUrl = `${location.origin}/app/run?h=${hunt.id}`;
+  const runnerUrl = `${getRunnerOrigin()}/?h=${hunt.id}`;
   const scanUrl = () => `${location.origin}/api/scan/qr?g=${group}&h=${hunt.id}`;
 
   async function downloadPdf(current: Hunt) {

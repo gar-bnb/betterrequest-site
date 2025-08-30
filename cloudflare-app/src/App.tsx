@@ -1,4 +1,3 @@
-// import "./App.css";
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import HuntBuilder from "./pages/HuntBuilder";
@@ -6,35 +5,55 @@ import RunHunt from "./pages/RunHunt";
 import Help from "./pages/Help";
 import PrintPack from "./pages/PrintPack";
 
-
-/**
- * App wrapper that preserves the public landing at "/"
- * and mounts the portal app only under "/app/*".
- */
 export default function App() {
-  const isPortal =
-    typeof window !== "undefined" && window.location.pathname.startsWith("/app");
-  return isPortal ? <PortalApp /> : <Landing />;
+  const host = typeof window !== "undefined" ? window.location.hostname : "";
+  const path = typeof window !== "undefined" ? window.location.pathname : "/";
+  const onPortalSub = host.startsWith("portal.");
+  const onRunSub = host.startsWith("run.");
+  const isPortalPath = path.startsWith("/app"); // legacy root-domain portal
+
+  if (onRunSub) return <RunAppSubdomain />;            // run.betterquest.ie -> runner at "/"
+  if (onPortalSub) return <PortalAppSubdomain />;      // portal.betterquest.ie -> portal at "/"
+  return isPortalPath ? <PortalAppLegacy /> : <Landing />; // betterquest.ie/app/* or landing
 }
 
-/* ------------------------- PORTAL (under /app/*) ------------------------- */
+/** Portal at root (portal.betterquest.ie) */
+function PortalAppSubdomain() {
+  return (
+    <BrowserRouter basename="/">
+      <Routes>
+        <Route path="/" element={<PortalHome />} />
+        <Route path="/builder" element={<HuntBuilder />} />
+        <Route path="/run" element={<RunHunt />} />       {/* optional testing */}
+        <Route path="/print" element={<PrintPack />} />
+        <Route path="/help" element={<Help />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
-function PortalApp() {
+/** Runner at root (run.betterquest.ie) */
+function RunAppSubdomain() {
+  return (
+    <BrowserRouter basename="/">
+      <Routes>
+        <Route path="/" element={<RunHunt />} />
+        <Route path="/run" element={<RunHunt />} />       {/* support both "/" and "/run" */}
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+/** Legacy portal under /app on root domain (betterquest.ie/app/*) */
+function PortalAppLegacy() {
   return (
     <BrowserRouter basename="/app">
-      <nav style={{ padding: 12, borderBottom: "1px solid #eee" }}>
-        <Link to="/">Portal</Link> • <Link to="/builder">Builder</Link> •{" "}
-        <Link to="/run">Run</Link>
-        <span style={{ marginLeft: 12, fontSize: 12, color: "#666" }}>
-          (Public site: <a href="/">/</a>)
-        </span>
-      </nav>
       <Routes>
         <Route path="/" element={<PortalHome />} />
         <Route path="/builder" element={<HuntBuilder />} />
         <Route path="/run" element={<RunHunt />} />
-        <Route path="/help" element={<Help />} />
         <Route path="/print" element={<PrintPack />} />
+        <Route path="/help" element={<Help />} />
       </Routes>
     </BrowserRouter>
   );
