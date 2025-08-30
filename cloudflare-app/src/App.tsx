@@ -3,6 +3,7 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import HuntBuilder from "./pages/HuntBuilder";
 import RunHunt from "./pages/RunHunt";
+import Help from "./pages/Help";
 
 /**
  * App wrapper that preserves the public landing at "/"
@@ -30,6 +31,7 @@ function PortalApp() {
         <Route path="/" element={<PortalHome />} />
         <Route path="/builder" element={<HuntBuilder />} />
         <Route path="/run" element={<RunHunt />} />
+        <Route path="/help" element={<Help />} />
       </Routes>
     </BrowserRouter>
   );
