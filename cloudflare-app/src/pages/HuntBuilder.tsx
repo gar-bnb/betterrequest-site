@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import QRCodeCard from "../components/QRCodeCard";
 import { getOrCreateGroupId } from "../lib/storage";
+import ErrorBanner from "../components/ErrorBanner";
 
 type ClueIn = { location: string; text?: string };
 
@@ -28,12 +29,15 @@ export default function HuntBuilder() {
   const [clues, setClues] = useState<ClueIn[] | null>(null);
   const [huntId, setHuntId] = useState<string | null>(null);
   const [groupId, setGroupId] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [notice, setNotice] = useState<string>("");
 
   useEffect(() => {
     setGroupId(getOrCreateGroupId());
   }, []);
 
   async function generate() {
+    setError(""); setNotice("");
     try {
       const r = await api<{ clues: ClueIn[] }>(`/ai/generate`, {
         method: "POST",
@@ -44,12 +48,14 @@ export default function HuntBuilder() {
         }),
       });
       setClues(r.clues);
+      setNotice("Draft clues generated. Review before creating the hunt.");
     } catch (err: any) {
-      alert(err?.message || "Failed to generate clues");
+      setError(err?.message || "Failed to generate clues.");
     }
   }
 
   async function createHunt() {
+    setError(""); setNotice("");
     try {
       const route = (clues || locations).map((c, i) => ({
         location: c.location,
@@ -66,14 +72,26 @@ export default function HuntBuilder() {
         }),
       });
       setHuntId(r.id);
+      setNotice("Hunt created. QR pack and runner link are ready.");
     } catch (err: any) {
-      alert(err?.message || "Failed to create hunt");
+      setError(err?.message || "Failed to create hunt.");
     }
   }
 
   return (
     <div style={{ maxWidth: 960, margin: "40px auto", padding: 16 }}>
       <h1>BetterQuest — Builder (MVP)</h1>
+
+      {error && (
+        <div className="mt-2">
+          <ErrorBanner kind="error" title="Could not complete that action" message={error} onClose={() => setError("")} />
+        </div>
+      )}
+      {notice && (
+        <div className="mt-2">
+          <ErrorBanner kind="success" message={notice} onClose={() => setNotice("")} />
+        </div>
+      )}
 
       <label>
         Name{" "}
@@ -102,8 +120,8 @@ export default function HuntBuilder() {
       ))}
 
       <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
-        <button onClick={generate}>Generate clues (AI or fallback)</button>
-        <button onClick={createHunt}>Create hunt</button>
+        <button className="btn btn-secondary" onClick={generate}>Generate clues (AI or fallback)</button>
+        <button className="btn btn-primary" onClick={createHunt}>Create hunt</button>
       </div>
 
       {clues && (
@@ -145,11 +163,15 @@ export default function HuntBuilder() {
             <button
               className="btn btn-secondary"
               style={{ marginLeft: 8 }}
-              onClick={() =>
-                navigator.clipboard.writeText(
-                  `${location.origin}/app/run?h=${huntId}`
-                )
-              }
+              onClick={async () => {
+                const url = `${location.origin}/app/run?h=${huntId}`;
+                try {
+                  await navigator.clipboard.writeText(url);
+                  setNotice("Runner link copied to clipboard.");
+                } catch {
+                  setNotice(url);
+                }
+              }}
             >
               Copy link
             </button>

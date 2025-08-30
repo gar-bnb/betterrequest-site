@@ -1,6 +1,7 @@
 // /cloudflare-app/src/pages/RunHunt.tsx
 import { useEffect, useState } from "react";
 import { getOrCreateGroupId } from "../lib/storage";
+import ErrorBanner from "../components/ErrorBanner";
 
 /**
  * Runner page
@@ -13,6 +14,7 @@ export default function RunHunt() {
   const h = params.get("h"); // huntId
   const [text, setText] = useState<string>("Scan the first QR to begin.");
   const [wait, setWait] = useState<number>(0);
+  const [error, setError] = useState<string>("");
 
   // Countdown for cooldowns
   useEffect(() => {
@@ -27,9 +29,10 @@ export default function RunHunt() {
   (window as any).bq = {
     async scan() {
       if (!h) {
-        setText("❌ Missing hunt id in URL");
+        setError("Missing hunt id in URL (?h=...)");
         return;
       }
+      setError("");
       try {
         const res = await fetch(
           `/api/scan/qr?g=${getOrCreateGroupId()}&h=${h}`
@@ -46,10 +49,10 @@ export default function RunHunt() {
         } else if (j.status === "ok") {
           setText(j.clue?.text || "Next clue revealed.");
         } else {
-          setText("⚠️ Unexpected response. Please try again.");
+          setError("Unexpected response from server.");
         }
-      } catch (e) {
-        setText("❌ Network error. Please try again.");
+      } catch (e: any) {
+        setError(e?.message || "Network error. Please try again.");
       }
     },
   };
@@ -57,13 +60,22 @@ export default function RunHunt() {
   return (
     <div style={{ maxWidth: 720, margin: "40px auto", textAlign: "center" }}>
       <h1>BetterQuest — Run</h1>
+
+      {error && (
+        <div style={{ marginBottom: 12 }}>
+          <ErrorBanner kind="error" title="Runner issue" message={error} onClose={() => setError("")} />
+        </div>
+      )}
+
       <p>{text}</p>
 
       {wait > 0 && (
         <p>Please wait {Math.ceil(wait / 1000)}s before the next scan.</p>
       )}
 
-      <button onClick={() => (window as any).bq.scan()}>Simulate Scan</button>
+      <button className="btn btn-primary" onClick={() => (window as any).bq.scan()}>
+        Simulate Scan
+      </button>
 
       <p style={{ marginTop: 16, fontSize: 12, color: "#666" }}>
         Tip: For NFC tags, program them to{" "}
