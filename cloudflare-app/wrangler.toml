@@ -1,0 +1,22 @@
+name = "betterquest-pages"
+compatibility_date = "2025-08-01"
+
+# Local dev bindings (Pages dashboard bindings control production!)
+[[kv_namespaces]]
+binding = "BQ_HUNTS"
+id = "local-bq-hunts"
+
+[[kv_namespaces]]
+binding = "BQ_STATES"
+id = "local-bq-states"
+
+[[kv_namespaces]]
+binding = "BQ_TAGS"
+id = "local-bq-tags"
+
+[vars]
+APP_BASE_URL = "http://127.0.0.1:8788"
+USE_AI = "false"
+
+[observability]
+enabled = true

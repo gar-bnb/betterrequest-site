@@ -1,6 +1,64 @@
+// import "./App.css";
 import { useState } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import HuntBuilder from "./pages/HuntBuilder";
+import RunHunt from "./pages/RunHunt";
 
+/**
+ * App wrapper that preserves the public landing at "/"
+ * and mounts the portal app only under "/app/*".
+ */
 export default function App() {
+  const isPortal =
+    typeof window !== "undefined" && window.location.pathname.startsWith("/app");
+  return isPortal ? <PortalApp /> : <Landing />;
+}
+
+/* ------------------------- PORTAL (under /app/*) ------------------------- */
+
+function PortalApp() {
+  return (
+    <BrowserRouter basename="/app">
+      <nav style={{ padding: 12, borderBottom: "1px solid #eee" }}>
+        <Link to="/">Portal</Link> • <Link to="/builder">Builder</Link> •{" "}
+        <Link to="/run">Run</Link>
+        <span style={{ marginLeft: 12, fontSize: 12, color: "#666" }}>
+          (Public site: <a href="/">/</a>)
+        </span>
+      </nav>
+      <Routes>
+        <Route path="/" element={<PortalHome />} />
+        <Route path="/builder" element={<HuntBuilder />} />
+        <Route path="/run" element={<RunHunt />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+function PortalHome() {
+  return (
+    <div style={{ padding: 24 }}>
+      <h1>BetterQuest — App Portal</h1>
+      <p>This internal area won’t affect your public landing page.</p>
+      <ul>
+        <li>
+          <Link to="/builder">Create a Hunt (Builder)</Link>
+        </li>
+        <li>
+          <Link to="/run">Run a Hunt (Runner)</Link>
+        </li>
+      </ul>
+      <p style={{ fontSize: 12, color: "#666" }}>
+        We can add login/admin gating here later.
+      </p>
+    </div>
+  );
+}
+
+/* --------------------------- LANDING (at "/") ---------------------------- */
+/* This is your original landing page, unchanged except for an "App Portal" link. */
+
+function Landing() {
   const [openPre, setOpenPre] = useState(false);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
@@ -18,6 +76,10 @@ export default function App() {
             <a href="#how">How it works</a>
             <a href="#kit">What’s in the kit</a>
             <a href="#faq">FAQ</a>
+            {/* Link to the portal */}
+            <a href="/app" style={{ marginLeft: 12 }}>
+              App Portal
+            </a>
           </nav>
           <button className="btn btn-primary" onClick={() => setOpenPre(true)}>
             Preorder €249
@@ -41,9 +103,9 @@ export default function App() {
               Perfect for teams, schools, and events.
             </p>
             <ul className="bullets">
-              <li>• 60–90 minute experience for 10–40 players</li>
-              <li>• Zero setup apps — works with any modern phone</li>
-              <li>• Live leaderboard + anti-cheat cooldowns</li>
+              <li>60–90 minute experience for 10–40 players</li>
+              <li>Zero setup apps — works with any modern phone</li>
+              <li>Live leaderboard + anti-cheat cooldowns</li>
             </ul>
 
             <div className="cta-row">
@@ -271,7 +333,7 @@ function LeadForm({ compact = false }: { compact?: boolean }) {
   if (done) return <p className="text-sm" style={{ color: "#047857" }}>Thanks! We’ll keep you posted.</p>;
 
   return (
-    <div className={compact ? "mt-2" : "mt-2"} style={{ maxWidth: compact ? "100%" : 420 }}>
+    <div className={compact ? "mt-2" : "mt-2"} style={{ maxWidth: compact ? "90%" : 420 }}>
       <div className="inline-form">
         <input
           className="input"
@@ -327,22 +389,50 @@ function PreorderForm({
   return (
     <div className="mt-3">
       <label className="text-sm">Work email</label>
-      <input className="input mt-1" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input
+        className="input mt-1"
+        placeholder="you@company.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
       <label className="text-sm mt-3">Organisation (optional)</label>
-      <input className="input mt-1" placeholder="Company / School" value={org} onChange={(e) => setOrg(e.target.value)} />
+      <input
+        className="input mt-1"
+        placeholder="Company / School"
+        value={org}
+        onChange={(e) => setOrg(e.target.value)}
+      />
 
       <label className="text-sm mt-3">Quantity</label>
-      <input type="number" min={1} max={10} className="input mt-1" style={{ width: 96 }}
-             value={qty} onChange={(e) => setQty(parseInt(e.target.value || "1"))} />
+      <input
+        type="number"
+        min={1}
+        max={10}
+        className="input mt-1"
+        style={{ width: 96 }}
+        value={qty}
+        onChange={(e) => setQty(parseInt(e.target.value || "1", 10))}
+      />
 
       <label className="text-sm mt-3" style={{ display: "flex", gap: 8 }}>
-        <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
-        <span>I agree to be contacted about this preorder and understand no payment is taken today.</span>
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+        />
+        <span>
+          I agree to be contacted about this preorder and understand no payment
+          is taken today.
+        </span>
       </label>
 
-      <button className="btn btn-primary w-full mt-3" onClick={submit}>Reserve my kit</button>
-      <p className="small mt-1">We’ll email a secure checkout link when your kit is ready.</p>
+      <button className="btn btn-primary w-full mt-3" onClick={submit}>
+        Reserve my kit
+      </button>
+      <p className="small mt-1">
+        We’ll email a secure checkout link when your kit is ready.
+      </p>
     </div>
   );
 }
