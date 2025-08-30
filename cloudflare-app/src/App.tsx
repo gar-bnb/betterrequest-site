@@ -36,24 +36,117 @@ function PortalApp() {
 }
 
 function PortalHome() {
+  const [runId, setRunId] = useState("");
+
+  const openRunner = () => {
+    if (!runId.trim()) return alert("Enter a Hunt ID first");
+    location.href = `/app/run?h=${encodeURIComponent(runId.trim())}`;
+  };
+
+  const copyRunner = async () => {
+    if (!runId.trim()) return alert("Enter a Hunt ID first");
+    const url = `${location.origin}/app/run?h=${encodeURIComponent(runId.trim())}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      alert("Runner link copied!");
+    } catch {
+      alert(url); // fallback: show the URL to copy manually
+    }
+  };
+
   return (
-    <div style={{ padding: 24 }}>
-      <h1>BetterQuest — App Portal</h1>
-      <p>This internal area won’t affect your public landing page.</p>
-      <ul>
-        <li>
-          <Link to="/builder">Create a Hunt (Builder)</Link>
-        </li>
-        <li>
-          <Link to="/run">Run a Hunt (Runner)</Link>
-        </li>
-      </ul>
-      <p style={{ fontSize: 12, color: "#666" }}>
-        We can add login/admin gating here later.
-      </p>
-    </div>
+    <main className="section" style={{ paddingTop: 28 }}>
+      <div className="container">
+        {/* Header */}
+        <div
+          className="card"
+          style={{
+            display: "grid",
+            gap: 8,
+            padding: 20,
+            alignItems: "start",
+          }}
+        >
+          <div className="m-0" style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
+            <h1 className="m-0" style={{ fontSize: 24, fontWeight: 900 }}>
+              BetterQuest — App Portal
+            </h1>
+            <span className="text-sm text-muted">Host tools & live runner</span>
+          </div>
+          <p className="text-muted m-0" style={{ fontSize: 14 }}>
+            Create a hunt, print the QR pack, and share the runner link with players.
+          </p>
+        </div>
+
+        {/* Primary actions */}
+        <div className="grid-3 mt-4">
+          {/* Create a Hunt */}
+          <div className="card" style={{ display: "grid", gap: 10 }}>
+            <h3 className="m-0" style={{ fontWeight: 800 }}>Create a Hunt</h3>
+            <p className="text-muted" style={{ margin: 0 }}>
+              Define locations, auto-generate clues, and save to get your printable QR pack.
+            </p>
+            <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
+              <Link className="btn btn-primary" to="/builder">Open Builder</Link>
+              <a className="btn btn-secondary" href="/app/builder#help">Quick tips</a>
+            </div>
+          </div>
+
+          {/* Run a Hunt (quick launcher) */}
+          <div className="card" style={{ display: "grid", gap: 10 }}>
+            <h3 className="m-0" style={{ fontWeight: 800 }}>Run a Hunt</h3>
+            <p className="text-muted" style={{ margin: 0 }}>
+              Already have an ID? Launch the runner or copy a shareable link.
+            </p>
+            <div className="inline-form" style={{ marginTop: 4 }}>
+              <input
+                className="input"
+                placeholder="Enter Hunt ID (e.g. 9f3a2bc1de)"
+                value={runId}
+                onChange={(e) => setRunId(e.target.value)}
+              />
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button className="btn btn-primary" onClick={openRunner}>Open Runner</button>
+              <button className="btn btn-secondary" onClick={copyRunner}>Copy Link</button>
+            </div>
+            <p className="text-sm text-muted m-0">
+              Tip: The Builder shows your ID and runner link after you create a hunt.
+            </p>
+          </div>
+
+          {/* Print Pack / Help */}
+          <div className="card" style={{ display: "grid", gap: 10 }}>
+            <h3 className="m-0" style={{ fontWeight: 800 }}>Print Pack & Help</h3>
+            <p className="text-muted" style={{ margin: 0 }}>
+              Print the QR cards and read the 2-minute host guide (placement, cooldowns, safety).
+            </p>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 4 }}>
+              <Link className="btn btn-secondary" to="/builder#print">Print QR Pack</Link>
+              <a className="btn" href="/app/help">Host guide</a>
+            </div>
+          </div>
+        </div>
+
+        {/* Secondary info */}
+        <div className="card mt-4">
+          <div style={{ display: "grid", gap: 8 }}>
+            <strong>What happens next?</strong>
+            <ul className="m-0" style={{ paddingLeft: 18 }}>
+              <li>Create your hunt → you’ll get an ID and a ready-to-print QR pack.</li>
+              <li>Place tags/QRs at the locations; share the runner link with teams.</li>
+              <li>Teams tap/scan to reveal clues; cooldowns prevent brute-forcing.</li>
+            </ul>
+            <p className="text-sm text-muted m-0">
+              Need access control for /app? We can enable Cloudflare Access so only your emails can sign in.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
+
 
 /* --------------------------- LANDING (at "/") ---------------------------- */
 /* This is your original landing page, unchanged except for an "App Portal" link. */
