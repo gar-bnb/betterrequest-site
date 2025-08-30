@@ -1,4 +1,3 @@
-// /cloudflare-app/src/pages/PrintPack.tsx
 import { useEffect, useMemo, useState } from "react";
 import QRCodeCard from "../components/QRCodeCard";
 import { getOrCreateGroupId } from "../lib/storage";
@@ -56,12 +55,12 @@ export default function PrintPack() {
   const runnerUrl = `${location.origin}/app/run?h=${hunt.id}`;
   const scanUrl = () => `${location.origin}/api/scan/qr?g=${group}&h=${hunt.id}`;
 
-  async function downloadPdf() {
+  async function downloadPdf(current: Hunt) {
     try {
       setDownloading(true);
-      const { jsPDF } = await import("jspdf");
+      const { jsPDF } = await import("jspdf"); // dynamic import keeps main bundle lean
 
-      // A4 portrait (points)
+      // A4 portrait (pt)
       const pdf = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
       const pageW = pdf.internal.pageSize.getWidth();
       const pageH = pdf.internal.pageSize.getHeight();
@@ -74,17 +73,17 @@ export default function PrintPack() {
       const qrSize = Math.min(260, cardW * 0.4);
       const labelY = margin + 22;
 
-      for (let i = 0; i < hunt.route.length; i++) {
+      for (let i = 0; i < current.route.length; i++) {
         if (i > 0 && i % 2 === 0) pdf.addPage();
 
-        const row = i % 2; // 0 top, 1 bottom
+        const row = i % 2;
         const topY = margin + row * (cardH + margin);
 
-        const clue = hunt.route[i];
+        const clue = current.route[i];
         const label = `${i + 1}. ${clue.location}`;
-        const url = scanUrl();
+        const url = `${location.origin}/api/scan/qr?g=${group}&h=${current.id}`;
 
-        // QR as PNG data URL
+        // QR as PNG
         const dataUrl = await toDataURL(url, { margin: 1, width: qrSize });
 
         // Card border
@@ -106,15 +105,17 @@ export default function PrintPack() {
         const textY = topY + 40;
         pdf.text("Runner:", textX, textY);
         pdf.setFont("helvetica", "bold");
-        pdf.text(runnerUrl, textX, textY + 14, { maxWidth: cardW - (qrSize + 48) });
+        pdf.text(`${location.origin}/app/run?h=${current.id}`, textX, textY + 14, {
+          maxWidth: cardW - (qrSize + 48),
+        });
 
-        // Optional: print clue text
+        // Optional clue body
         // pdf.setFont("helvetica", "normal");
         // pdf.setFontSize(12);
         // pdf.text(clue.text, textX, textY + 40, { maxWidth: cardW - (qrSize + 48) });
       }
 
-      pdf.save(`BetterQuest-QR-Pack-${hunt.id}.pdf`);
+      pdf.save(`BetterQuest-QR-Pack-${current.id}.pdf`);
     } catch {
       alert("Failed to generate PDF. Try the Print button instead.");
     } finally {
@@ -135,7 +136,11 @@ export default function PrintPack() {
           </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <button className="btn btn-primary" onClick={() => window.print()}>Print</button>
-            <button className="btn btn-secondary" onClick={downloadPdf} disabled={downloading}>
+            <button
+              className="btn btn-secondary"
+              onClick={() => downloadPdf(hunt)}
+              disabled={downloading}
+            >
               {downloading ? "Building PDF…" : "Download PDF"}
             </button>
             <a className="btn" href={`/app/builder`}>Back to Builder</a>
